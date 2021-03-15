@@ -33,20 +33,24 @@ defmodule Canvas do
   end
 
   defp traverse_x(_init, {_cx = max_x, _} = current, max_x, _max_y, outline_char, _fill_char, canvas) do
-    Map.put(canvas, current, outline_char) 
+    if outline_char do
+      Map.put(canvas, current, outline_char) 
+    else
+      canvas
+    end
   end
 
-  defp traverse_x(init, {cx, cy = max_y}, max_x, max_y, outline_char, fill_char, canvas) do
+  defp traverse_x(init, {cx, cy = max_y}, max_x, max_y, outline_char, fill_char, canvas) when not is_nil(outline_char) do
     canvas = Map.put(canvas, {cx, cy}, outline_char) 
     traverse_x(init, {cx + 1, cy}, max_x, max_y, outline_char, fill_char, canvas)
   end
 
-  defp traverse_x({_, y} = init, {cx, y = cy} = current, max_x, max_y, outline_char, fill_char, canvas) do
+  defp traverse_x({_, y} = init, {cx, y = cy} = current, max_x, max_y, outline_char, fill_char, canvas) when not is_nil(outline_char) do
     canvas = Map.put(canvas, current, outline_char) 
     traverse_x(init, {cx + 1, cy}, max_x, max_y, outline_char, fill_char, canvas)
   end
 
-  defp traverse_x({x, _} = init, {x = cx, cy} = current, max_x, max_y, outline_char, fill_char, canvas) do
+  defp traverse_x({x, _} = init, {x = cx, cy} = current, max_x, max_y, outline_char, fill_char, canvas) when not is_nil(outline_char) do
     canvas = Map.put(canvas, current, outline_char) 
     traverse_x(init, {cx + 1, cy}, max_x, max_y, outline_char, fill_char, canvas)
   end
