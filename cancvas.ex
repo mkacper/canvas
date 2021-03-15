@@ -1,3 +1,0 @@
-defmodule Canvas do
-
-end
