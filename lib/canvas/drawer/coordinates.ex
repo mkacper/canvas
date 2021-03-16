@@ -14,8 +14,8 @@ defmodule Canvas.Drawer.Coordinates do
     traverse_y(init, current, max_x, max_y, outline_char, fill_char, %{})
   end
 
-  def flood_fill(point, fill_char, coordinates) do
-    traverse_points(neighbours(point), %{}, fill_char, coordinates)
+  def flood_fill(point, fill_char, coordinates, max \\ 32) do
+    traverse_points(neighbours(point), %{}, fill_char, coordinates, max)
   end
 
   # Helpers
@@ -93,22 +93,22 @@ defmodule Canvas.Drawer.Coordinates do
 
   # Flood fill
 
-  defp traverse_points([], _, _, coordinates), do: coordinates
+  defp traverse_points([], _, _, coordinates, _), do: coordinates
 
-  defp traverse_points([{x, y} = p | ps], visited, fill_char, coordinates)
-       when x > 32 or y > 32 or x < 0 or y < 0,
-       do: traverse_points(ps, Map.put(visited, p, :visited), fill_char, coordinates)
+  defp traverse_points([{x, y} = p | ps], visited, fill_char, coordinates, max)
+       when x > max or y > max or x < 0 or y < 0,
+       do: traverse_points(ps, Map.put(visited, p, :visited), fill_char, coordinates, max)
 
-  defp traverse_points([p | ps], visited, fill_char, coordinates) when is_map_key(visited, p),
-    do: traverse_points(ps, visited, fill_char, coordinates)
+  defp traverse_points([p | ps], visited, fill_char, coordinates, max) when is_map_key(visited, p),
+    do: traverse_points(ps, visited, fill_char, coordinates, max)
 
-  defp traverse_points([p | ps], visited, fill_char, coordinates) when is_map_key(coordinates, p),
-    do: traverse_points(ps, Map.put(visited, p, :visited), fill_char, coordinates)
+  defp traverse_points([p | ps], visited, fill_char, coordinates, max) when is_map_key(coordinates, p),
+    do: traverse_points(ps, Map.put(visited, p, :visited), fill_char, coordinates, max)
 
-  defp traverse_points([p | ps], visited, fill_char, coordinates) do
+  defp traverse_points([p | ps], visited, fill_char, coordinates, max) do
     coordinates = Map.put(coordinates, p, fill_char)
     visited = Map.put(visited, p, :visited)
-    traverse_points(ps ++ neighbours(p), visited, fill_char, coordinates)
+    traverse_points(ps ++ neighbours(p), visited, fill_char, coordinates, max)
   end
 
   # Utils
