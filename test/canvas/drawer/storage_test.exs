@@ -32,8 +32,9 @@ defmodule Canvas.Drawer.StorageTest do
   test "save_draw/1 saves a draw into storage" do
     # GIVEN
     canvas_id = 12345
-    Storage.save_canvas(%Canvas{id: canvas_id})
-    draw = Drawer.draw_rectangle({3, 2}, 5, 3, "X", "O", canvas_id)
+    canvas = %Canvas{id: canvas_id}
+    Storage.save_canvas(canvas)
+    draw = Drawer.draw_rectangle({3, 2}, 5, 3, "X", "O", canvas)
 
     # WHEN
     :ok = Storage.save_draw(draw)
