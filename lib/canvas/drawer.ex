@@ -33,7 +33,7 @@ defmodule Canvas.Drawer do
     do: Storage.save_canvas(canvas)
 
   def draw_rectangle(point, width, height, outline_char, fill_char, %Canvas{id: canvas_id})
-      when not is_nil(outline_char) and not is_nil(fill_char) do
+      when not is_nil(outline_char) or not is_nil(fill_char) do
     coordinates = Coordinates.rectangle(point, width, height, outline_char, fill_char)
     %Draw{coordinates: coordinates, canvas_id: canvas_id, inserted_at: timestamp()}
   end
