@@ -17,30 +17,29 @@ defmodule Canvas.Drawer do
 
   # API
 
-  def get_canvas(id) do
-    Storage.get_canvas_with_drawings_orderd_by_insert_time(id)
-  end
+  def initalize_storage(),
+    do: Storage.init()
 
-  def save_draw(draw) do
-    Storage.save_draw(draw)
-  end
+  def new_canvas,
+    do: %Canvas{id: id(), width: @canvas_size, height: @canvas_size, drawings: []}
 
-  def new_canvas do
-    %Canvas{id: id(), width: @canvas_size, height: @canvas_size, drawings: []}
-  end
+  def get_canvas(id),
+    do: Storage.get_canvas_with_drawings_orderd_by_insert_time(id)
 
-  def draw_rectangle(point, width, height, outline_char, fill_char, canvas_id)
+  def save_draw(%Draw{} = draw),
+    do: Storage.save_draw(draw)
+
+  def save_canvas(%Canvas{} = canvas),
+    do: Storage.save_canvas(canvas)
+
+  def draw_rectangle(point, width, height, outline_char, fill_char, %Canvas{id: canvas_id})
       when not is_nil(outline_char) and not is_nil(fill_char) do
     coordinates = Coordinates.rectangle(point, width, height, outline_char, fill_char)
     %Draw{coordinates: coordinates, canvas_id: canvas_id, inserted_at: timestamp()}
   end
 
-  def flood_fill(point, fill_char, canvas_id) do
-    canvas =
-      canvas_id
-      |> get_canvas()
-      |> apply_drawings()
-
+  def flood_fill(point, fill_char, %Canvas{id: canvas_id} = canvas) do
+    canvas = apply_drawings(canvas)
     coordinates = Coordinates.flood_fill(point, fill_char, canvas.coordinates)
     %Draw{coordinates: coordinates, canvas_id: canvas_id, inserted_at: timestamp()}
   end
