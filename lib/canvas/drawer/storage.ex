@@ -27,15 +27,21 @@ defmodule Canvas.Drawer.Storage do
   def save_canvas(canvas), do: save_struct(canvas)
 
   def get_canvas_with_drawings_orderd_by_insert_time(canvas_id) do
-    canvas = {Canvas, canvas_id} |> :mnesia.dirty_read() |> List.first() |> to_struct()
+    case :mnesia.dirty_read({Canvas, canvas_id}) do
+      [] ->
+        {:error, :canvas_not_found}
 
-    drawings =
-      {Draw, canvas_id}
-      |> :mnesia.dirty_read()
-      |> Enum.map(&to_struct(&1))
-      |> sort_asc_by_inserted_at()
+      [canvas_obj] ->
+        canvas = to_struct(canvas_obj)
 
-    %{canvas | drawings: drawings}
+        drawings =
+          {Draw, canvas_id}
+          |> :mnesia.dirty_read()
+          |> Enum.map(&to_struct(&1))
+          |> sort_asc_by_inserted_at()
+
+        {:ok, %{canvas | drawings: drawings}}
+    end
   end
 
   defp save_struct(struct) do
