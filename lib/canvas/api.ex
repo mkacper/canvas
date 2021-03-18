@@ -100,7 +100,8 @@ defmodule Canvas.API do
        )
        when is_integer(x) and
               is_integer(y) and
-              not is_nil(fill_char),
+              is_binary(fill_char) and
+              byte_size(fill_char) == 1,
        do: {:ok, %{params | "init_point" => {x, y}}}
 
   defp validate_params(_), do: {:error, :bad_request}
