@@ -8,7 +8,7 @@ defmodule Canvas.DrawerTest do
     canvas = Drawer.new_canvas()
 
     # THEN
-    assert is_integer(canvas.id)
+    assert is_binary(canvas.id)
     assert 32 = canvas.width
     assert 32 = canvas.height
     assert [] = canvas.drawings

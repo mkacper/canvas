@@ -7,8 +7,7 @@ defmodule Canvas.API do
   alias Canvas.Drawer
 
   get "/api/canvas/:canvas_id" do
-    {id, _} = Integer.parse(canvas_id)
-    case Drawer.get_canvas(id) do
+    case Drawer.get_canvas(canvas_id) do
       {:error, :canvas_not_found} ->
         send_resp(conn, 404, "Canvas not found")
 

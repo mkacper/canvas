@@ -16,7 +16,7 @@ defmodule Canvas.Drawer.StorageTest do
 
   test "save_canvas/1 saves a canvas into storage" do
     # GIVEN
-    canvas_id = 12345
+    canvas_id = "12345"
     canvas = %Canvas{id: canvas_id, drawings: []}
 
     # WHEN
@@ -31,7 +31,7 @@ defmodule Canvas.Drawer.StorageTest do
 
   test "save_draw/1 saves a draw into storage" do
     # GIVEN
-    canvas_id = 12345
+    canvas_id = "12345"
     canvas = %Canvas{id: canvas_id}
     Storage.save_canvas(canvas)
     draw = Drawer.draw_rectangle({3, 2}, 5, 3, "X", "O", canvas)
@@ -50,7 +50,7 @@ defmodule Canvas.Drawer.StorageTest do
 
   test "get_canvas_with_drawings_orderd_by_insert_time/1 returns canvas with properly sorted drawings" do
     # GIVEN
-    canvas_id = 12345
+    canvas_id = "12345"
     canvas = %Canvas{id: canvas_id}
     Storage.save_canvas(canvas)
 
@@ -76,7 +76,7 @@ defmodule Canvas.Drawer.StorageTest do
 
   test "get_canvas_with_drawings_orderd_by_insert_time/1 returns not found error when provided canvas id does not exist" do
     # GIVEN
-    canvas_id = :not_existent_id
+    canvas_id = "not_existent_id"
 
     # WHEN
     result = Storage.get_canvas_with_drawings_orderd_by_insert_time(canvas_id)

@@ -67,7 +67,10 @@ defmodule Canvas.Drawer do
 
   defp id do
     ref = make_ref()
-    :erlang.phash2(ref)
+
+    ref
+    |> :erlang.phash2()
+    |> to_string()
   end
 
   defp timestamp do
