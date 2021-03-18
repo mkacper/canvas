@@ -84,16 +84,34 @@ defmodule Canvas.DrawerTest do
       :mnesia.clear_table(Draw)
     end
 
-    test "POST #{@canvas_path}/:id/drawings returns not found error when passed canvas id does not exist" do
-      [{x, y}, width, height, outline_char, fill_char] = drawing_fixture_spec()
-
+    test "POST #{@canvas_path}/:id/drawings creates a flood fill drawing", %{canvas: canvas} do
       params = %{
-        type: "rectangle",
-        init_point: [x, y],
-        width: width,
-        height: height,
-        outline_char: outline_char,
-        fill_char: fill_char
+        type: "flood_fill",
+        init_point: [0, 0],
+        fill_char: "-"
+      }
+
+      # WHEN
+      {status, resp_body} =
+        request(:post, Path.join(@canvas_path, "#{canvas.id}/drawings"), params)
+
+      # THEN
+      assert 201 = status
+      assert resp_body =~ "Drawing added successfully"
+
+      {200, canvas_bin} = request(:get, Path.join(@canvas_path, "#{canvas.id}"), nil)
+      assert canvas_bin =~ flood_fill_drawing_fixture()
+
+      # cleanup
+      :mnesia.clear_table(Canvas)
+      :mnesia.clear_table(Draw)
+    end
+
+    test "POST #{@canvas_path}/:id/drawings returns not found error when passed canvas id does not exist" do
+      params = %{
+        type: "flood_fill",
+        init_point: [0, 0],
+        fill_char: "-"
       }
 
       # WHEN
@@ -137,6 +155,33 @@ defmodule Canvas.DrawerTest do
         assert resp_body =~ "Bad request"
       end
     end
+
+    @flood_fill_drawing_params %{
+      type: "flood_fill",
+      init_point: [1, 2],
+      fill_char: "-"
+    }
+
+    for {error, params} <- [
+          {:init_point_not_integer, %{@flood_fill_drawing_params | init_point: {"1", "2"}}},
+          {:fill_chars_null, %{@flood_fill_drawing_params | fill_char: nil}}
+        ] do
+      test "POST #{@canvas_path}/:id/drawings returns bad request error when" <>
+             " trying to create a flood fill drawing with bad params (#{error})",
+           %{canvas: canvas} do
+        # WHEN
+        {status, resp_body} =
+          request(
+            :post,
+            Path.join(@canvas_path, "#{canvas.id}/drawings"),
+            unquote(Macro.escape(params))
+          )
+
+        # THEN
+        assert 400 = status
+        assert resp_body =~ "Bad request"
+      end
+    end
   end
 
   # Utils
@@ -154,4 +199,6 @@ defmodule Canvas.DrawerTest do
   defp drawing_fixture_spec, do: [{0, 3}, 8, 4, "O", nil]
 
   defp drawing_fixture, do: File.read!("test/fixtures/drawing")
+
+  defp flood_fill_drawing_fixture, do: File.read!("test/fixtures/flood_fill_drawing")
 end
