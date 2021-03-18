@@ -1,4 +1,4 @@
-defmodule Canvas.DrawerTest do
+defmodule Canvas.APITest do
   use ExUnit.Case
   use Plug.Test
 
