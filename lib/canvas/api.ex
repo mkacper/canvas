@@ -38,25 +38,25 @@ defmodule Canvas.API do
     with {:ok, params} <- validate_params(conn.body_params),
          {:ok, canvas} <- Drawer.get_canvas(canvas_id) do
       :ok =
-      case params do
-        %{"type" => "rectangle"} ->
-          Drawer.draw_rectangle(
-            params["init_point"],
-            params["width"],
-            params["height"],
-            params["outline_char"],
-            params["fill_char"],
-            canvas
-          )
+        case params do
+          %{"type" => "rectangle"} ->
+            Drawer.draw_rectangle(
+              params["init_point"],
+              params["width"],
+              params["height"],
+              params["outline_char"],
+              params["fill_char"],
+              canvas
+            )
 
-        %{"type" => "flood_fill"} ->
-          Drawer.flood_fill(
-            params["init_point"],
-            params["fill_char"],
-            canvas
-          )
-      end
-      |> Drawer.save_draw()
+          %{"type" => "flood_fill"} ->
+            Drawer.flood_fill(
+              params["init_point"],
+              params["fill_char"],
+              canvas
+            )
+        end
+        |> Drawer.save_draw()
 
       send_resp(conn, 201, "Drawing added successfully")
     else
