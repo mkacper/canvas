@@ -13,7 +13,7 @@ defmodule Canvas.API do
 
   alias Canvas.Drawer
 
-  post "/api/canvas/" do
+  post "/api/canvas" do
     canvas = Drawer.new_canvas()
     :ok = Drawer.save_canvas(canvas)
     send_resp(conn, 201, "Canvas id: #{canvas.id}")
