@@ -13,7 +13,8 @@ defmodule Canvas.MixProject do
 
   def application do
     [
-      extra_applications: [:logger, :mnesia],
+      extra_applications: [:logger],
+      included_applications: [:mnesia],
       mod: {Canvas.Application, []}
     ]
   end
