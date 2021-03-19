@@ -6,9 +6,11 @@ defmodule Canvas.Application do
   @impl true
   def start(_type, _args) do
     Canvas.Drawer.initalize_storage()
+
     children = [
       {
-        Plug.Cowboy, scheme: :http, plug: Canvas.API, port: 4000
+        Plug.Cowboy,
+        scheme: :http, plug: Canvas.API, port: 4000
       }
     ]
 

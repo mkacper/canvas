@@ -99,11 +99,13 @@ defmodule Canvas.Drawer.Coordinates do
        when x > max or y > max or x < 0 or y < 0,
        do: traverse_points(ps, Map.put(visited, p, :visited), fill_char, coordinates, max)
 
-  defp traverse_points([p | ps], visited, fill_char, coordinates, max) when is_map_key(visited, p),
-    do: traverse_points(ps, visited, fill_char, coordinates, max)
+  defp traverse_points([p | ps], visited, fill_char, coordinates, max)
+       when is_map_key(visited, p),
+       do: traverse_points(ps, visited, fill_char, coordinates, max)
 
-  defp traverse_points([p | ps], visited, fill_char, coordinates, max) when is_map_key(coordinates, p),
-    do: traverse_points(ps, Map.put(visited, p, :visited), fill_char, coordinates, max)
+  defp traverse_points([p | ps], visited, fill_char, coordinates, max)
+       when is_map_key(coordinates, p),
+       do: traverse_points(ps, Map.put(visited, p, :visited), fill_char, coordinates, max)
 
   defp traverse_points([p | ps], visited, fill_char, coordinates, max) do
     coordinates = Map.put(coordinates, p, fill_char)

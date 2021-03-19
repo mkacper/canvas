@@ -56,7 +56,7 @@ defmodule Canvas.Drawer do
   def to_binary(%Canvas{coordinates: coordinates}) do
     for y <- 0..(@canvas_size - 1) do
       Enum.join(
-        for x <- 0..@canvas_size - 1 do
+        for x <- 0..(@canvas_size - 1) do
           Map.get(coordinates, {x, y}, " ")
         end ++ ["\n"]
       )
