@@ -1,5 +1,7 @@
 defmodule Canvas.API do
   use Plug.Router
+  # This should be split into router that only holds routes to controllers
+  # mappings and controllers that handle the actuall logic.
 
   plug(:match)
 
@@ -17,6 +19,7 @@ defmodule Canvas.API do
     canvas = Drawer.new_canvas()
     :ok = Drawer.save_canvas(canvas)
     send_resp(conn, 201, "Canvas id: #{canvas.id}")
+    # we could go with JSON responses
   end
 
   get "/api/canvas/:canvas_id" do
@@ -72,6 +75,8 @@ defmodule Canvas.API do
     send_resp(conn, 404, "oops")
   end
 
+  # This should be done in a different way definietly. I'd probably go with Ecto
+  # embedded schemas if I had more time.
   defp validate_params(
          %{
            "type" => "rectangle",

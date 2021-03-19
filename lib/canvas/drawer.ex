@@ -5,7 +5,7 @@ defmodule Canvas.Drawer do
 
   alias Canvas.Drawer.{Coordinates, Storage}
 
-  @canvas_size 32
+  @canvas_size 32 # this should come from confing file
 
   defmodule Canvas do
     defstruct ~w(id width height drawings coordinates)a
@@ -40,6 +40,10 @@ defmodule Canvas.Drawer do
 
   def flood_fill(point, fill_char, %Canvas{id: canvas_id} = canvas) do
     canvas = apply_drawings(canvas)
+    # Once we do flood fill the drawing represents the canvas up to the point in
+    # time when the operation was done so we could remove the previous drawings
+    # and improve the overall performance of the next flood fill or fetching/drawing
+    # canvas operations.
     coordinates = Coordinates.flood_fill(point, fill_char, canvas.coordinates)
     %Draw{coordinates: coordinates, canvas_id: canvas_id, inserted_at: timestamp()}
   end

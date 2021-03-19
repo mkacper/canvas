@@ -10,7 +10,7 @@ defmodule Canvas.Application do
     children = [
       {
         Plug.Cowboy,
-        scheme: :http, plug: Canvas.API, port: 4000
+        scheme: :http, plug: Canvas.API, port: 4000 # port should be configurable
       }
     ]
 

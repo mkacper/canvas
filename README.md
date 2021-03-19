@@ -1,3 +1,35 @@
+# Notes from the author of the project
+
+Before moving on to the details of the project I'd like to highlight a few
+key, from my perspective, things that I hope allow to better understand
+this implementation, decisions I made here and in general this project as
+a whole.
+
+I consider this project in its current shape to be a quickly written Proof
+of Concept rather than a production ready service. Given time limitations and
+8 hours per day programmer job I've done my best to deliver good enough
+thing. My main focus was on providing something that works end to end at
+the cost of polishing every little detail.
+
+Key things to keep in mind when looking at this project:
+
+- function specs and documentation is missing,
+- not enough tests, especially for corner cases,
+- `mnesia` is used as a storage (in a dirty way) and that's not the best
+    choice for production but good enough for PoC (I was looking for
+    something quick and easy to use),
+- the module with algorithm implementation should be better tested, not only
+    based on fixtures,
+- web layer should be spread across router and controller abstractions
+    instead of being packed into a single module
+
+What's more, I left some comments in the code explaining it's certain
+parts.
+
+I hope you'll like my app!
+
+---
+
 # Canvas
 
 The service exposes an HTTP API that allows to:

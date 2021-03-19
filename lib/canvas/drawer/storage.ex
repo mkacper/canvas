@@ -20,8 +20,12 @@ defmodule Canvas.Drawer.Storage do
       type: :bag,
       attributes: [:canvas_id, :coordinates, :inserted_at]
     )
+    # we should pattern match on the return values and crash if they do not mach
+    # our expectations
   end
 
+  # it would be nice to verify if there is not a canvas with the same id already
+  # in the storage
   def save_draw(draw), do: save_struct(draw)
 
   def save_canvas(canvas), do: save_struct(canvas)
