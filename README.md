@@ -6,9 +6,9 @@ this implementation, decisions I made here and in general this project as
 a whole.
 
 I consider this project in its current shape to be a quickly written Proof
-of Concept rather than a production ready service. Given time limitations and
-8 hours per day programmer job I've done my best to deliver good enough
-thing. My main focus was on providing something that works end to end at
+of Concept rather than a production ready service. Given time limitations
+I've done my best to deliver good enough thing. My main focus was on
+providing something that works end to end at
 the cost of polishing every little detail.
 
 Key things to keep in mind when looking at this project:
